@@ -1,8 +1,10 @@
 {
-  "name": "my-app",
+  "name": "analyticsplot",
+  "author": {"name":"Denis Lima"},
   "version": "0.1.0",
   "private": true,
   "main": "electron/main.js",
+  "homepage": "./",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -11,10 +13,14 @@
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
+    "@types/react-router-dom": "^5.1.7",
+    "@types/styled-components": "^5.1.7",
     "electron-is-dev": "^1.2.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
+    "styled-components": "^5.2.1",
     "typescript": "^4.0.3",
     "web-vitals": "^0.2.4"
   },
@@ -30,15 +36,12 @@
     "electron-pack": "yarn dist --win portable"
   },
   "build": {
-    "productName": "my-app",
+    "productName": "Analytics Plot",
     "files": [
       "**/*",
       "build/**/*"
     ],
-    "extends": null,
-    "author":{
-      "name": " Denis Lima"
-    }
+    "extends": null
   },
   "eslintConfig": {
     "extends": [

@@ -2,9 +2,8 @@ import * as path from 'path';
 import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 import * as isDev from 'electron-is-dev'
 
-let win: BrowserWindow | null = null
 function createWindow() {
-  win = new BrowserWindow({
+  let win = new BrowserWindow({
     width: 1024,
     height: 728,
     show: false,
@@ -14,14 +13,12 @@ function createWindow() {
       enableRemoteModule: true,
     },
   })
-//   win.loadURL("http://localhost:3000/")
   if (isDev) {
     win.loadURL("http://localhost:3000/")
     win.webContents.openDevTools()
   } else {
     win.loadFile(path.join(__dirname, "../build/index.html"))
   }
-
   win.maximize()
 
   win.once("ready-to-show", () => {
@@ -47,3 +44,17 @@ app.on("activate", () => {
   }
 })
 
+ipcMain.on('open file dialog', async (e) => {
+  const filePath = await dialog.showOpenDialog({
+    properties: ['openFile'],
+    filters: [{ name: 'csv File', extensions: ['csv'] }],
+  }); 
+
+  if (!filePath.canceled) {
+    e.sender.send('file path', filePath.filePaths[0]);
+    return
+  }else{
+    e.sender.send('canceled')
+    return
+  }
+});
