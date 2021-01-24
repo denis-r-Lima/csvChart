@@ -36,7 +36,7 @@ export function openFileWindowns(longestLine: number[]): Promise<string[][]> {
       resolve(dataArray);
     });
     ipcRenderer.once('canceled', (_e: any) => {
-      reject(new Error("Cancel"));
+      reject(false);
     });
   });
 }

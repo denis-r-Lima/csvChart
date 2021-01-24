@@ -1,24 +1,27 @@
-import React from 'react';
+import React, { useContext } from "react"
 
-import { Container } from './styles';
-import DropBox from '../DropBox';
-import Modal from '../Modal'
+import { Container } from "./styles"
+import DropBox from "../DropBox"
+import Modal from "../Modal"
+import { states, States } from "../../routes"
 
 const DropFile: React.FC = () => {
+  const { data } = useContext(states) as States
+
   return (
     <div>
       <Container
         onDragOver={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          e.dataTransfer.dropEffect = 'none';
+          e.preventDefault()
+          e.stopPropagation()
+          e.dataTransfer.dropEffect = "none"
         }}
       >
         <DropBox />
       </Container>
-      <Modal />  
+      {data ? <Modal /> : <></>}
     </div>
-  );
-};
+  )
+}
 
-export default DropFile;
+export default DropFile

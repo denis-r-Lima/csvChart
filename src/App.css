@@ -3,6 +3,7 @@
   padding: 0;
   box-sizing: border-box;
   user-select: none;
+  outline: none;
 }
 body {
   position: relative;
@@ -13,3 +14,6 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+tr{
+  background-color: #fff;
+}

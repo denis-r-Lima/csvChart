@@ -1,25 +1,38 @@
-import React, { useContext, useRef } from "react"
+import React, { useContext } from "react"
+import { MdChevronRight, MdClose, MdDeleteForever } from "react-icons/md"
 
-import { Container, ModalDiv, Content, Table, Td, LineIndex, ColumnIndex } from "./style"
+import { SelectColumnCell } from "../../controllers/selectCell"
+import removeData from "../../controllers/dataHandle"
+
+import {
+  Container,
+  ModalDiv,
+  Content,
+  Table,
+  Td,
+  LineIndex,
+  ColumnIndex,
+  ContentFooter,
+  ContentHeader,
+  Button,
+} from "./style"
 
 import { states, States } from "../../routes"
 
-
 const Modal: React.FC = () => {
-  const { data, longestLine } = useContext(states) as States
-
-  const container = useRef<HTMLDivElement | null>(null)
+  const { data, setData, longestLine } = useContext(states) as States
 
   const tableHeader = new Array(longestLine[0]).fill(" ")
 
-  if (data !== null) {
-    let modal_container = container.current as HTMLDivElement
-    modal_container.style.display = "block"
-  }
+  let linesToDelete: number[] = []
+  let columnsToDelete: number[] = []
 
   return (
-    <Container ref={container}>
+    <Container>
       <ModalDiv>
+        <ContentHeader>
+          <h4>Select lines and columns to be removed</h4>
+        </ContentHeader>
         <Content>
           <Table>
             <tbody>
@@ -27,7 +40,12 @@ const Modal: React.FC = () => {
                 <Td> </Td>
                 {tableHeader.map((item, index) => {
                   return (
-                    <ColumnIndex key={`${index} -- ${item}`}>
+                    <ColumnIndex
+                      key={`${index} -- ${item}`}
+                      onClick={(e: React.MouseEvent) => {
+                        SelectColumnCell(e, columnsToDelete)
+                      }}
+                    >
                       {index + 1}
                     </ColumnIndex>
                   )
@@ -43,7 +61,12 @@ const Modal: React.FC = () => {
                   }
                   return (
                     <tr key={index1}>
-                      <LineIndex key={index1}>
+                      <LineIndex
+                        key={index1}
+                        onClick={(e: React.MouseEvent) => {
+                          SelectColumnCell(e, linesToDelete)
+                        }}
+                      >
                         {index1 + 1}
                       </LineIndex>
                       {d.map((item, index2) => {
@@ -58,6 +81,23 @@ const Modal: React.FC = () => {
             </tbody>
           </Table>
         </Content>
+        <ContentFooter>
+          <Button onClick={() => setData(null)}>
+            Cancel
+            <MdClose size='18px' color='darkred' />
+          </Button>
+          <Button
+            onClick={() => {
+              longestLine[0] -= columnsToDelete.length
+              setData(removeData(data, linesToDelete, columnsToDelete))
+            }}
+          >
+            Delete <MdDeleteForever size='20px' color='darkred' />
+          </Button>
+          <Button onClick={() => {}}>
+            Next <MdChevronRight size='20px' color='green' />
+          </Button>
+        </ContentFooter>
       </ModalDiv>
     </Container>
   )

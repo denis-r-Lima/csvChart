@@ -45,4 +45,4 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 
-**Note: To make it work, add on node_module/react-scripts/config/webpack.config.js above 'node:' the term target: 'electron-render'
+**Note: To make it work, add on node_module/react-scripts/config/webpack.config.js above 'node:' the term target: 'electron-renderer'
