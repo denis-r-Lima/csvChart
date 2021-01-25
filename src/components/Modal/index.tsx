@@ -4,6 +4,8 @@ import { MdChevronRight, MdClose, MdDeleteForever } from "react-icons/md"
 import { SelectColumnCell } from "../../controllers/selectCell"
 import removeData from "../../controllers/dataHandle"
 
+import MiniModal from "../MiniModal"
+
 import {
   Container,
   ModalDiv,
@@ -15,6 +17,7 @@ import {
   ContentFooter,
   ContentHeader,
   Button,
+  StickyP,
 } from "./style"
 
 import { states, States } from "../../routes"
@@ -26,6 +29,22 @@ const Modal: React.FC = () => {
 
   let linesToDelete: number[] = []
   let columnsToDelete: number[] = []
+
+  const CancelClick = () => {
+    longestLine[0] = 0
+    setData(null)
+  }
+
+  const DeleteClick = () => {
+    longestLine[0] -= columnsToDelete.length
+    setData(removeData(data, linesToDelete, columnsToDelete))
+  }
+
+  const ConfirmClick = () => {
+    let miniModal = document.querySelector(".Hidden") as HTMLDivElement
+    miniModal.classList.remove("Hidden")
+    console.log("Confirmado parceiro")
+  }
 
   return (
     <Container>
@@ -40,13 +59,15 @@ const Modal: React.FC = () => {
                 <Td> </Td>
                 {tableHeader.map((item, index) => {
                   return (
-                    <ColumnIndex
-                      key={`${index} -- ${item}`}
-                      onClick={(e: React.MouseEvent) => {
-                        SelectColumnCell(e, columnsToDelete)
-                      }}
-                    >
-                      {index + 1}
+                    <ColumnIndex key={`${index} -- ${item}`}>
+                      <StickyP
+                        key={`${index} -- ${item}`}
+                        onClick={(e: React.MouseEvent) => {
+                          SelectColumnCell(e, columnsToDelete)
+                        }}
+                      >
+                        {index + 1}
+                      </StickyP>
                     </ColumnIndex>
                   )
                 })}
@@ -61,13 +82,15 @@ const Modal: React.FC = () => {
                   }
                   return (
                     <tr key={index1}>
-                      <LineIndex
-                        key={index1}
-                        onClick={(e: React.MouseEvent) => {
-                          SelectColumnCell(e, linesToDelete)
-                        }}
-                      >
-                        {index1 + 1}
+                      <LineIndex key={index1}>
+                        <StickyP
+                          key={index1}
+                          onClick={(e: React.MouseEvent) => {
+                            SelectColumnCell(e, linesToDelete)
+                          }}
+                        >
+                          {index1 + 1}
+                        </StickyP>
                       </LineIndex>
                       {d.map((item, index2) => {
                         return <Td key={`${index1}-${index2}`}>{item}</Td>
@@ -82,23 +105,19 @@ const Modal: React.FC = () => {
           </Table>
         </Content>
         <ContentFooter>
-          <Button onClick={() => setData(null)}>
+          <Button onClick={() => CancelClick()}>
             Cancel
             <MdClose size='18px' color='darkred' />
           </Button>
-          <Button
-            onClick={() => {
-              longestLine[0] -= columnsToDelete.length
-              setData(removeData(data, linesToDelete, columnsToDelete))
-            }}
-          >
+          <Button onClick={() => DeleteClick()}>
             Delete <MdDeleteForever size='20px' color='darkred' />
           </Button>
-          <Button onClick={() => {}}>
+          <Button onClick={() => ConfirmClick()}>
             Next <MdChevronRight size='20px' color='green' />
           </Button>
         </ContentFooter>
       </ModalDiv>
+      <MiniModal/>
     </Container>
   )
 }
