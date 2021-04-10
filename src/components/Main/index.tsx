@@ -10,7 +10,7 @@ import {
   ReferenceLine,
 } from "recharts"
 
-import MarkerLabel from "./markerLabel"
+import MarkerLabel from "../markerLabel"
 import { clickHandle } from "../../controllers/plotHandle"
 import { 
   ChartContainer, 

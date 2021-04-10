@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Container } from './markerStyles';
+import { Container } from './styles';
 
 interface MarkerProps{
     text: string;

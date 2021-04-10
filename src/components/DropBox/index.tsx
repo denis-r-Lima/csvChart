@@ -15,7 +15,7 @@ import DataManipulation from "../../controllers/dataManipulation"
 import TransformData from "../../controllers/transformData"
 
 const Box: React.FC = () => {
-  let { setData, setPlotData} = useContext(states) as States
+  let { setPlotData } = useContext(states) as States
   const history = useHistory()
 
   const columnsToRevome = [0,2,8,9]
@@ -30,7 +30,6 @@ const Box: React.FC = () => {
       if (testFileExtension(file)) {
         const dragFile = new OpenDragFile(file.path)
         const data = dragFile.getData()
-        setData(data)
         const finalData = new DataManipulation(data)
                         .removeColumn(columnsToRevome)
                         .removeRow(rowsToRemove)
