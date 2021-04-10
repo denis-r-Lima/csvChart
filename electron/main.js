@@ -145,3 +145,16 @@ electron_1.ipcMain.on('Get save path', function (e) { return __awaiter(void 0, v
         }
     });
 }); });
+electron_1.ipcMain.on('Print file', function (e) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        win.webContents.print({}, function (success, err) {
+            if (success) {
+                e.sender.send('Success');
+            }
+            else {
+                e.sender.send('Fail', err);
+            }
+        });
+        return [2 /*return*/];
+    });
+}); });

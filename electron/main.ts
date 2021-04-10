@@ -89,3 +89,13 @@ ipcMain.on('Get save path', async e => {
     return
   }
 })
+
+ipcMain.on('Print file', async e => {
+     win.webContents.print({}, (success, err) => {
+       if(success){
+         e.sender.send('Success')
+       }else{
+         e.sender.send('Fail', err)
+       }
+     } )
+})

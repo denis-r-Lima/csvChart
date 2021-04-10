@@ -32,11 +32,11 @@ export default class StorageFile{
 
     }
 
-    private async generateData(): Promise<any>{
+    private async generateData(): Promise<Buffer>{
         ipcRenderer.send('Generate PDF data')
 
         return new Promise((resolve, reject) => {
-            ipcRenderer.once('PDF data ready', (_e: any, arg: any) => {
+            ipcRenderer.once('PDF data ready', (_e: any, arg: Buffer) => {
                 resolve(arg)
             })
             ipcRenderer.once('Error', (_e: any, arg: any) => {

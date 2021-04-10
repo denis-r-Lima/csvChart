@@ -6,8 +6,8 @@ import { DropBox } from "./styles"
 
 import {
   testFileExtension,
-  HandleFile,
-  HandleFileWindows,
+  OpenDragFile,
+  OpenFileWindows,
 } from "../../controllers/handleFile"
 
 import { states, States } from "../../routes"
@@ -28,8 +28,8 @@ const Box: React.FC = () => {
     let file = e.dataTransfer.files.item(0)
     if (file) {
       if (testFileExtension(file)) {
-        const handleFile = new HandleFile(file.path)
-        const data = handleFile.openFile()
+        const dragFile = new OpenDragFile(file.path)
+        const data = dragFile.getData()
         setData(data)
         const finalData = new DataManipulation(data)
                         .removeColumn(columnsToRevome)
@@ -62,8 +62,8 @@ const Box: React.FC = () => {
 
   const onCLickEvent = async () => {
     try {
-      const fileWindows = new HandleFileWindows()
-      const data = await fileWindows.openFileWindowns()
+      const fileWindows = new OpenFileWindows()
+      const data = await fileWindows.getData()
       if (data) {
         const finalData = new DataManipulation(data)
                         .removeColumn(columnsToRevome)

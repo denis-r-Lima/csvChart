@@ -5,13 +5,13 @@ export function testFileExtension(e: File): boolean {
   return /\.csv$/i.test(e.name);
 }
 
-export class HandleFile {
+class HandleFile{
   protected path: string
 
-  constructor(path: string){
+  constructor(path: string = ''){
     this.path = path
   }
-  
+
   protected stringToArray(data: string) {
     const lineDataArray = data.split(/\r?\n/);
 
@@ -22,34 +22,50 @@ export class HandleFile {
     return dataArray;
   }
 
-  public openFile(){
+  protected openFile(): string[][]{
     const data = fs.readFileSync(this.path, 'utf8');
 
     const dataArray: string[][] = this.stringToArray(data);
 
     return dataArray;
   }
+}
+
+export class OpenDragFile extends HandleFile {
+  
+
+  constructor(path: string = ''){
+    super(path)
+  }
+  
+  public getData(): string[][]{
+    return this.openFile()
+  }
  
 }
 
-export class HandleFileWindows extends HandleFile{
-  constructor(){
-    super('')
-  }
+export class OpenFileWindows extends HandleFile{
 
-  public openFileWindowns(): Promise<string[][]> {
+  private openFileWindowns(): Promise<string> {
     ipcRenderer.send('open file dialog');
   
     return new Promise((resolve, reject) => {
       ipcRenderer.once('file path', (_e: any, arg: string) => {
-        this.path = arg
-        const dataArray = this.openFile();
-        resolve(dataArray);
+        resolve(arg);
       });
       ipcRenderer.once('canceled', (_e: any) => {
         reject(false);
       });
     });
+  }
+
+  public async getData(){
+    try{
+      this.path = await this.openFileWindowns()
+      return this.openFile()
+    }catch{
+      return false
+    }
   }
   
 }
