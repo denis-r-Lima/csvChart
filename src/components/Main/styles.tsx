@@ -4,8 +4,9 @@ export const Container = styled.div`
     width: 100vw;
     height: 100vh;
     display: grid;
-    grid-template-columns: 65% auto;
-    grid-template-rows: 60px auto;
+    place-content: center;
+    grid-template-columns: 760px 400px;
+    grid-template-rows: 60px calc(100vh - 60px);
     padding: 0.5rem 1rem;
 `;
 
@@ -29,7 +30,7 @@ export const ChartContainer = styled.div`
 `
 
 export const LegendContainer = styled.div `
-    width: 100%;
+    width: 750px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -40,7 +41,6 @@ export const LegendContainer = styled.div `
 export const ChartInfoContainer = styled.div`
     grid-row: 2;
     grid-column: 2;
-    padding: 0.5rem;
     display: flex;
     flex-direction: column-reverse;
     justify-content: center;

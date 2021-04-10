@@ -2,8 +2,10 @@ import * as path from 'path';
 import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 import * as isDev from 'electron-is-dev'
 
+let win: BrowserWindow
+
 function createWindow() {
-  let win = new BrowserWindow({
+    win = new BrowserWindow({
     width: 1024,
     height: 728,
     show: false,
@@ -58,3 +60,32 @@ ipcMain.on('open file dialog', async (e) => {
     return
   }
 });
+
+ipcMain.on('Generate PDF data', async e => {
+  try{
+    let data = await win.webContents.printToPDF({
+      landscape: true,
+      marginsType: 1,
+      pageSize: 'A4',
+      printBackground: true
+    })
+    e.sender.send('PDF data ready', data)
+  }catch(err){
+    e.sender.send('Error', err)
+  }
+})
+
+ipcMain.on('Get save path', async e => {
+  const filePath = await dialog.showSaveDialog({
+    properties: ['createDirectory'],
+    filters: [{ name: 'pdf File', extensions: ['pdf'] }],
+  }); 
+
+  if (!filePath.canceled) {
+    e.sender.send('Save path ready', filePath.filePath);
+    return
+  }else{
+    e.sender.send('Canceled')
+    return
+  }
+})

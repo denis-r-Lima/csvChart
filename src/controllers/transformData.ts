@@ -12,9 +12,7 @@ export default function TransformData(
 
   data.map((d) => {
     let dataObject: dataObject = {}
-
-    const [, time] = d[0].split(' ')
-    
+  
     for (let i = 1; i < d.length; i++) {
       
         let value = parseInt(d[i])
@@ -22,7 +20,7 @@ export default function TransformData(
         dataObject[columns[i]] = value
       
     }
-    dataObject.xAxis = time
+    dataObject.xAxis = d[0]
     transformedData.push(dataObject)
     return null
   })

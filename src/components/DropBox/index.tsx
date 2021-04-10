@@ -15,7 +15,7 @@ import DataManipulation from "../../controllers/dataManipulation"
 import TransformData from "../../controllers/transformData"
 
 const Box: React.FC = () => {
-  let { setData, longestLine , setPlotData} = useContext(states) as States
+  let { setData, setPlotData} = useContext(states) as States
   const history = useHistory()
 
   const columnsToRevome = [0,2,8,9]

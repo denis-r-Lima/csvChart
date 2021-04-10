@@ -5,6 +5,7 @@ export const Table = styled.table`
   border-collapse: collapse;
   width: 90%;
   font-size: 10px;
+  background-color: #ddd;
   `;
 
 export const Td = styled.td`

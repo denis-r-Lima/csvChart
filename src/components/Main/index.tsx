@@ -17,6 +17,7 @@ import { ChartContainer, ChartInfoContainer, Container, HeaderContainer, LegendC
 import { states, States } from "../../routes"
 import CustomLegend from "../CustomLegend"
 import ChartInfo from "../ChartInfo"
+import StorageFile from "../../controllers/storageFile"
 
 interface Marker {
   xAxis: string
@@ -46,9 +47,9 @@ const Main: React.FC = () => {
   }
 
   const HandleMarker = (e: any) => {
-    if (markers.length >= 4)return
+    if (markers.length >= 4 || !e)return
 
-    setMarkers(markers.concat(clickHandle(e)))
+    setMarkers(current => current.concat(clickHandle(e)))
   }
 
   return (
@@ -59,13 +60,12 @@ const Main: React.FC = () => {
         <ChartContainer>
           <div>
             <button onClick={() => handleClick()}>New</button>
-            <button onClick={() => console.log({ plotData, keys, ignorePlot})}>
-              Log Data
-            </button>
             <button onClick={() => setMarkers([])}>Clear Markers</button>
+            <button onClick={() => new StorageFile().saveFile()}>Save PDF</button>
           </div>
-          <ResponsiveContainer width='100%' height='80%'>
             <LineChart
+              width={730}
+              height={450}
               data={plotData}
               onClick={(e: any) => HandleMarker(e)}
               >
@@ -96,6 +96,7 @@ const Main: React.FC = () => {
                     <ReferenceLine
                     x={marker["xCord"]}
                     stroke='black'
+                    strokeWidth={2}
                     label={
                       <MarkerLabel
                       text={`${index + 1}`}
@@ -110,7 +111,6 @@ const Main: React.FC = () => {
                     <></>
                     )}
             </LineChart>
-          </ResponsiveContainer>
           <LegendContainer>
           {keys ? (
             keys.map((key, index) => {
@@ -131,7 +131,11 @@ const Main: React.FC = () => {
           </LegendContainer>
         </ChartContainer>
         <ChartInfoContainer>
-          <ChartInfo marker={ markers }/>
+          <ChartInfo 
+          marker={ markers }
+          ignorePlot={ignorePlot}
+          keys={keys}
+          />
         </ChartInfoContainer>
       </Container>
   )

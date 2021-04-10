@@ -39,8 +39,9 @@ exports.__esModule = true;
 var path = require("path");
 var electron_1 = require("electron");
 var isDev = require("electron-is-dev");
+var win;
 function createWindow() {
-    var win = new electron_1.BrowserWindow({
+    win = new electron_1.BrowserWindow({
         width: 1024,
         height: 728,
         show: false,
@@ -61,9 +62,9 @@ function createWindow() {
     win.once("ready-to-show", function () {
         win.show();
     });
-    /*win.once("close", () => {
-      app.quit()
-    })*/
+    win.once("close", function () {
+        electron_1.app.quit();
+    });
 }
 electron_1.app.whenReady().then(createWindow);
 electron_1.app.on("window-all-closed", function () {
@@ -92,6 +93,52 @@ electron_1.ipcMain.on('open file dialog', function (e) { return __awaiter(void 0
                 }
                 else {
                     e.sender.send('canceled');
+                    return [2 /*return*/];
+                }
+                return [2 /*return*/];
+        }
+    });
+}); });
+electron_1.ipcMain.on('Generate PDF data', function (e) { return __awaiter(void 0, void 0, void 0, function () {
+    var data, err_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, win.webContents.printToPDF({
+                        landscape: true,
+                        marginsType: 1,
+                        pageSize: 'A4',
+                        printBackground: true
+                    })];
+            case 1:
+                data = _a.sent();
+                e.sender.send('PDF data ready', data);
+                return [3 /*break*/, 3];
+            case 2:
+                err_1 = _a.sent();
+                e.sender.send('Error', err_1);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); });
+electron_1.ipcMain.on('Get save path', function (e) { return __awaiter(void 0, void 0, void 0, function () {
+    var filePath;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, electron_1.dialog.showSaveDialog({
+                    properties: ['createDirectory'],
+                    filters: [{ name: 'pdf File', extensions: ['pdf'] }]
+                })];
+            case 1:
+                filePath = _a.sent();
+                if (!filePath.canceled) {
+                    e.sender.send('Save path ready', filePath.filePath);
+                    return [2 /*return*/];
+                }
+                else {
+                    e.sender.send('Canceled');
                     return [2 /*return*/];
                 }
                 return [2 /*return*/];
