@@ -1,17 +1,26 @@
 import React, { useContext } from "react"
+import { useHistory } from "react-router-dom"
+
 
 import { DropBox } from "./styles"
 
 import {
   testFileExtension,
-  openFile,
-  openFileWindowns,
+  HandleFile,
+  HandleFileWindows,
 } from "../../controllers/handleFile"
 
 import { states, States } from "../../routes"
+import DataManipulation from "../../controllers/dataManipulation"
+import TransformData from "../../controllers/transformData"
 
 const Box: React.FC = () => {
-  let { setData, longestLine } = useContext(states) as States
+  let { setData, longestLine , setPlotData} = useContext(states) as States
+  const history = useHistory()
+
+  const columnsToRevome = [0,2,8,9]
+  const rowsToRemove = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,
+    20,21,22,23,24]
 
   const DropEvent = async (e: React.DragEvent) => {
     e.preventDefault()
@@ -19,7 +28,15 @@ const Box: React.FC = () => {
     let file = e.dataTransfer.files.item(0)
     if (file) {
       if (testFileExtension(file)) {
-        setData(openFile(file.path, longestLine))
+        const handleFile = new HandleFile(file.path)
+        const data = handleFile.openFile()
+        setData(data)
+        const finalData = new DataManipulation(data)
+                        .removeColumn(columnsToRevome)
+                        .removeRow(rowsToRemove)
+                        .build()
+        setPlotData(TransformData(['Time','Ch1','Ch2','Ch3','Ch4','Ch5'], finalData))
+        history.push('/main')
       } else {
         alert("Error, please use only .csv files!")
       }
@@ -45,9 +62,15 @@ const Box: React.FC = () => {
 
   const onCLickEvent = async () => {
     try {
-      let response = await openFileWindowns(longestLine)
-      if (response) {
-        setData(response)
+      const fileWindows = new HandleFileWindows()
+      const data = await fileWindows.openFileWindowns()
+      if (data) {
+        const finalData = new DataManipulation(data)
+                        .removeColumn(columnsToRevome)
+                        .removeRow(rowsToRemove)
+                        .build()
+        setPlotData(TransformData(['Time','Ch1','Ch2','Ch3','Ch4','Ch5'], finalData))
+        history.push('/main')
       }
     } catch {}
   }

@@ -25,9 +25,9 @@ function createWindow() {
     win.show()
   })
 
-  /*win.once("close", () => {
+  win.once("close", () => {
     app.quit()
-  })*/
+  })
 }
 
 app.whenReady().then(createWindow)

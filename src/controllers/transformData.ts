@@ -3,28 +3,26 @@ interface dataObject {
 }
 
 export default function TransformData(
-  xAxisIndex: number[],
   columns: string[],
-  data: string[][]
+  data: string[][] | null
 ): Object[] {
-  const axisIndex = xAxisIndex.sort((a, b) => a - b)
+  if(!data) return []
 
   let transformedData: Object[] = []
 
   data.map((d) => {
     let dataObject: dataObject = {}
-    let xAxis = ""
-    for (let i = 0; i < axisIndex.length; i++) {
-      xAxis += `${d[axisIndex[i]]} `
-    }
-    for (let i = 0; i < d.length; i++) {
-      if (axisIndex.indexOf(i) < 0) {
+
+    const [, time] = d[0].split(' ')
+    
+    for (let i = 1; i < d.length; i++) {
+      
         let value = parseInt(d[i])
         if (value < 0) value = 0
         dataObject[columns[i]] = value
-      }
+      
     }
-    dataObject.xAxis = xAxis.trim()
+    dataObject.xAxis = time
     transformedData.push(dataObject)
     return null
   })
