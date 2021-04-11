@@ -79,7 +79,8 @@ const ChartInfo: React.FC<Props> = ({ marker , ignorePlot, keys}) => {
             <tr>
                 <Td>Pressure test duration 1-2(min)</Td>
                 <Td>{marker[0]  && marker[1] &&
-                 `${Math.round((new Date(marker[1].xAxis).getTime() - new Date(marker[0].xAxis).getTime())/60000)} min`}</Td>
+                 `${Math.round((new Date(marker[1].xAxis).getTime() - 
+                 new Date(marker[0].xAxis).getTime())/60000)} min`}</Td>
             </tr>
             <tr>
                 <Td>Start Pressure 3(PSI)</Td>
@@ -96,7 +97,8 @@ const ChartInfo: React.FC<Props> = ({ marker , ignorePlot, keys}) => {
             <tr>
                 <Td>Pressure test duration 3-4(min)</Td>
                 <Td>{marker[2]  && marker[3] &&
-                 `${(new Date(marker[3].xAxis).getTime() - new Date(marker[2].xAxis).getTime())/60000} min`}</Td>
+                 `${Math.round((new Date(marker[3].xAxis).getTime() - 
+                 new Date(marker[2].xAxis).getTime())/60000)} min`}</Td>
             </tr>
             <tr>
                 <Td>Transducer serial #</Td>

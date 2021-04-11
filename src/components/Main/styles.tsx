@@ -26,11 +26,12 @@ export const ChartContainer = styled.div`
     display: flex;
     flex-direction: column-reverse;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
+    z-index: 2;
 `
 
 export const LegendContainer = styled.div `
-    width: 750px;
+    width: 710px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -45,4 +46,5 @@ export const ChartInfoContainer = styled.div`
     flex-direction: column-reverse;
     justify-content: center;
     align-items: center;
+    z-index: 2;
 `

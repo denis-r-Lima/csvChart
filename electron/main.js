@@ -1,4 +1,4 @@
-"use strict";
+
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -53,10 +53,11 @@ function createWindow() {
     });
     if (isDev) {
         win.loadURL("http://localhost:3000/");
-        win.webContents.openDevTools();
+        //win.webContents.openDevTools();
     }
     else {
         win.loadFile(path.join(__dirname, "../build/index.html"));
+        win.removeMenu();
     }
     win.maximize();
     win.once("ready-to-show", function () {

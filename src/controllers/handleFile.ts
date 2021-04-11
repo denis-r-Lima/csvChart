@@ -12,28 +12,26 @@ class HandleFile{
     this.path = path
   }
 
-  protected stringToArray(data: string) {
-    const lineDataArray = data.split(/\r?\n/);
+  private splitComma(data: string) {
+    const linesArray = data.split(/\r?\n/);
 
-    const dataArray: string[][] = lineDataArray.map((line) => {
-      const lineArray = line.split(',') 
-      return lineArray;
+    const dataArray: string[][] = linesArray.map((line) => {
+      return line.split(',');
     });
     return dataArray;
   }
 
   protected openFile(): string[][]{
+
     const data = fs.readFileSync(this.path, 'utf8');
 
-    const dataArray: string[][] = this.stringToArray(data);
+    const dataArray: string[][] = this.splitComma(data);
 
     return dataArray;
   }
 }
 
 export class OpenDragFile extends HandleFile {
-  
-
   constructor(path: string = ''){
     super(path)
   }

@@ -6,8 +6,14 @@ export const Container = styled.div`
   width: fit-content;
   max-width: 100px;  
   padding: 1px 5px;
-  background-color: transparent;
-  /* border: 1px solid #000; */
   font-size: 14px;
   font-weight: bold;
+  color: #666;
 `;
+
+export const VerticalLine = styled.div`
+  width: 0px;
+  height: 100%;
+  border: 0.7px solid #666;
+`;
+

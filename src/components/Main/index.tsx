@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react"
-import { useHistory } from "react-router-dom"
 import {
   LineChart,
   Line,
@@ -21,10 +20,9 @@ import {
 import { states, States } from "../../routes"
 import CustomLegend from "../CustomLegend"
 import ChartInfo from "../ChartInfo"
-import StorageFile from "../../controllers/storageFile"
-import PrintFile from "../../controllers/printFile"
+import SideMenu from "../SideMenu"
 
-interface Marker {
+export interface Marker {
   xAxis: string
   [key: string]: any
 }
@@ -32,16 +30,11 @@ interface Marker {
 const colors: string[] = ["#AA2020", "#106610", "#101055", "#801080", "#000000"]
 
 const Main: React.FC = () => {
-  let history = useHistory()
 
-  const handleClick = () => {
-    history.push("/")
-  }
 
   const { plotData } = useContext(states) as States
   const [markers, setMarkers] = useState<Marker[]>([])
   const [ignorePlot, setIgnorePlot] = useState<Set<number>>(new Set())
-  console.log(markers)
   let keys: string[] = []
   if (plotData[0]) {
     keys = Object.keys(plotData[0])
@@ -63,14 +56,8 @@ const Main: React.FC = () => {
         <h1>Pressure Test Report</h1>
       </HeaderContainer>
       <ChartContainer>
-        <div>
-          <button onClick={() => handleClick()}>New</button>
-          <button onClick={() => setMarkers([])}>Clear Markers</button>
-          <button onClick={() => new StorageFile().saveFile()}>Save PDF</button>
-          <button onClick={() => new PrintFile().print()} >Print</button>
-        </div>
         <LineChart
-          width={730}
+          width={710}
           height={450}
           data={plotData}
           onClick={(e: any) => HandleMarker(e)}
@@ -100,8 +87,8 @@ const Main: React.FC = () => {
             markers.map((marker, index) => {
               return (
                 <ReferenceLine
-                  x={marker["xCord"]}
-                  stroke='black'
+                  y={0}
+                  stroke='transparent'
                   strokeWidth={2}
                   label={
                     <MarkerLabel
@@ -143,6 +130,7 @@ const Main: React.FC = () => {
           keys={keys}
         />
       </ChartInfoContainer>
+      <SideMenu setMarker={setMarkers}/>
     </Container>
   )
 }
