@@ -1,6 +1,5 @@
 import * as path from 'path';
 import { app, BrowserWindow, dialog, ipcMain } from 'electron';
-import * as isDev from 'electron-is-dev'
 
 let win: BrowserWindow
 
@@ -15,7 +14,7 @@ function createWindow() {
       enableRemoteModule: true,
     },
   })
-  if (isDev) {
+  if (process.env.IS_DEV) {
     win.loadURL("http://localhost:3000/")
     //win.webContents.openDevTools()
   } else {

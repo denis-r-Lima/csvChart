@@ -16,7 +16,7 @@ export default class PrintFile{
             ipcRenderer.once('Success', ()=>{
                 resolve('Success')
             })
-            ipcRenderer.once('Fail', (_e, arg: any) => {
+            ipcRenderer.once('Fail', (_e: any, arg: any) => {
                 reject(arg)
             })
         })

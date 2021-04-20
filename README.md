@@ -1,48 +1,43 @@
-# Getting Started with Create React App
+# About the project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project take one csv file with specific text format and make a Pressure x Time chart, example of the csv file format can be find on csvSample folder.
 
-## Available Scripts
+## Instalation
 
-In the project directory, you can run:
+Make sure to have Node.Js installed
 
-### `yarn start`
+1. Clone the repo
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+2. cd into the folder
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+3. Install the required packages:
+   ``` yarn ```
 
-### `yarn test`
+5. This project was initiated with Create React App, in order to work we need to change the react target on the WebPack configuration file:
+    - Open the WebPack configuration file:
+        ``` ./node_modules/react-scripts/config/webpack.config.js ```
+    - After the item ``` perfromace: false, ``` add ``` target: "electron-renderer", ```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Running 
 
-### `yarn build`
+1. To run the project first we need to transpile the main.ts file to main.js:
+    ``` yarn electron:transpile ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+2. Run the React front end:
+    ``` yarn react:start ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+3. Run electron:
+    ``` yarn electron:start ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Building dist 
 
-### `yarn eject`
+1. First is necessary to build the react project:
+    ``` yarn react:build ```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+2. Transpile the electron main.ts file to main.js:
+    ``` yarn electron:transpile ```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+3. Build electron aplication:
+    ``` yarn electron:pack ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-**Note: To make it work, add on node_module/react-scripts/config/webpack.config.js above 'node:' the term target: 'electron-renderer'
+**Note: The build is set to windows single file

@@ -1,4 +1,4 @@
-
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -38,7 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var path = require("path");
 var electron_1 = require("electron");
-var isDev = require("electron-is-dev");
+//import * as isDev from 'electron-is-dev'
 var win;
 function createWindow() {
     win = new electron_1.BrowserWindow({
@@ -51,9 +51,9 @@ function createWindow() {
             enableRemoteModule: true
         }
     });
-    if (isDev) {
+    if (process.env.IS_DEV) {
         win.loadURL("http://localhost:3000/");
-        //win.webContents.openDevTools();
+        //win.webContents.openDevTools()
     }
     else {
         win.loadFile(path.join(__dirname, "../build/index.html"));
