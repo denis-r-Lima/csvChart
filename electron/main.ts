@@ -64,14 +64,10 @@ ipcMain.on('open_file_dialog', async (e) => {
       success: true,
       message: filePath.filePaths[0]
     }
-    // e.sender.send('file path', filePath.filePaths[0]);
-    // return
   }else{
     response = {
       success: false
     }
-    // e.sender.send('canceled')
-    // return
   }
   e.sender.send('open_file_dialog_response', response)
 });

@@ -9,8 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    var _ = { label: 0, sent: function () { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function () { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -77,108 +77,108 @@ electron_1.app.on("activate", function () {
         createWindow();
     }
 });
-electron_1.ipcMain.on('open_file_dialog', function (e) { return __awaiter(void 0, void 0, void 0, function () {
-    var filePath, response;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, electron_1.dialog.showOpenDialog({
+electron_1.ipcMain.on('open_file_dialog', function (e) {
+    return __awaiter(void 0, void 0, void 0, function () {
+        var filePath, response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, electron_1.dialog.showOpenDialog({
                     properties: ['openFile'],
                     filters: [{ name: 'csv File', extensions: ['csv'] }]
                 })];
-            case 1:
-                filePath = _a.sent();
-                response = {};
-                if (!filePath.canceled) {
-                    response = {
-                        success: true,
-                        message: filePath.filePaths[0]
-                    };
-                    // e.sender.send('file path', filePath.filePaths[0]);
-                    // return
-                }
-                else {
-                    response = {
-                        success: false
-                    };
-                    // e.sender.send('canceled')
-                    // return
-                }
-                e.sender.send('open_file_dialog_response', response);
-                return [2 /*return*/];
-        }
+                case 1:
+                    filePath = _a.sent();
+                    response = {};
+                    if (!filePath.canceled) {
+                        response = {
+                            success: true,
+                            message: filePath.filePaths[0]
+                        };
+                    }
+                    else {
+                        response = {
+                            success: false
+                        };
+                    }
+                    e.sender.send('open_file_dialog_response', response);
+                    return [2 /*return*/];
+            }
+        });
     });
-}); });
-electron_1.ipcMain.on('generate_PDF_data', function (e) { return __awaiter(void 0, void 0, void 0, function () {
-    var response, data, err_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                response = {};
-                _a.label = 1;
-            case 1:
-                _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, win.webContents.printToPDF({
+});
+electron_1.ipcMain.on('generate_PDF_data', function (e) {
+    return __awaiter(void 0, void 0, void 0, function () {
+        var response, data, err_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    response = {};
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, win.webContents.printToPDF({
                         landscape: true,
                         marginsType: 1,
                         pageSize: 'A4',
                         printBackground: true
                     })];
-            case 2:
-                data = _a.sent();
-                response.success = true;
-                response.message = data;
-                return [3 /*break*/, 4];
-            case 3:
-                err_1 = _a.sent();
-                response.success = false;
-                response.message = err_1;
-                return [3 /*break*/, 4];
-            case 4:
-                e.sender.send('generate_PDF_data_response', response);
-                return [2 /*return*/];
-        }
+                case 2:
+                    data = _a.sent();
+                    response.success = true;
+                    response.message = data;
+                    return [3 /*break*/, 4];
+                case 3:
+                    err_1 = _a.sent();
+                    response.success = false;
+                    response.message = err_1;
+                    return [3 /*break*/, 4];
+                case 4:
+                    e.sender.send('generate_PDF_data_response', response);
+                    return [2 /*return*/];
+            }
+        });
     });
-}); });
-electron_1.ipcMain.on('get_save_path', function (e) { return __awaiter(void 0, void 0, void 0, function () {
-    var filePath, response;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, electron_1.dialog.showSaveDialog({
+});
+electron_1.ipcMain.on('get_save_path', function (e) {
+    return __awaiter(void 0, void 0, void 0, function () {
+        var filePath, response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, electron_1.dialog.showSaveDialog({
                     properties: ['createDirectory'],
                     filters: [{ name: 'pdf File', extensions: ['pdf'] }]
                 })];
-            case 1:
-                filePath = _a.sent();
-                response = {};
-                if (!filePath.canceled) {
+                case 1:
+                    filePath = _a.sent();
+                    response = {};
+                    if (!filePath.canceled) {
+                        response.success = true;
+                        response.message = filePath.filePath;
+                    }
+                    else {
+                        response.success = true;
+                    }
+                    e.sender.send('get_save_path_response', response);
+                    return [2 /*return*/];
+            }
+        });
+    });
+});
+electron_1.ipcMain.on('print_file', function (e) {
+    return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            win.webContents.print({}, function (success, err) {
+                var response = {};
+                if (success) {
                     response.success = true;
-                    response.message = filePath.filePath;
-                    // e.sender.send('Save path ready', filePath.filePath);
                 }
                 else {
-                    response.success = true;
-                    // e.sender.send('Canceled')
+                    response.success = false;
+                    response.message = err;
                 }
-                e.sender.send('get_save_path_response', response);
-                return [2 /*return*/];
-        }
-    });
-}); });
-electron_1.ipcMain.on('print_file', function (e) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        win.webContents.print({}, function (success, err) {
-            var response = {};
-            if (success) {
-                response.success = true;
-                //  e.sender.send('Success')
-            }
-            else {
-                response.success = false;
-                response.message = err;
-                // e.sender.send('Fail', err)
-            }
-            e.sender.send('print_file_response', response);
+                e.sender.send('print_file_response', response);
+            });
+            return [2 /*return*/];
         });
-        return [2 /*return*/];
     });
-}); });
+});
