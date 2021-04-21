@@ -38,7 +38,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var path = require("path");
 var electron_1 = require("electron");
-//import * as isDev from 'electron-is-dev'
 var win;
 function createWindow() {
     win = new electron_1.BrowserWindow({
@@ -78,8 +77,8 @@ electron_1.app.on("activate", function () {
         createWindow();
     }
 });
-electron_1.ipcMain.on('open file dialog', function (e) { return __awaiter(void 0, void 0, void 0, function () {
-    var filePath;
+electron_1.ipcMain.on('open_file_dialog', function (e) { return __awaiter(void 0, void 0, void 0, function () {
+    var filePath, response;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, electron_1.dialog.showOpenDialog({
@@ -88,44 +87,60 @@ electron_1.ipcMain.on('open file dialog', function (e) { return __awaiter(void 0
                 })];
             case 1:
                 filePath = _a.sent();
+                response = {};
                 if (!filePath.canceled) {
-                    e.sender.send('file path', filePath.filePaths[0]);
-                    return [2 /*return*/];
+                    response = {
+                        success: true,
+                        message: filePath.filePaths[0]
+                    };
+                    // e.sender.send('file path', filePath.filePaths[0]);
+                    // return
                 }
                 else {
-                    e.sender.send('canceled');
-                    return [2 /*return*/];
+                    response = {
+                        success: false
+                    };
+                    // e.sender.send('canceled')
+                    // return
                 }
+                e.sender.send('open_file_dialog_response', response);
                 return [2 /*return*/];
         }
     });
 }); });
-electron_1.ipcMain.on('Generate PDF data', function (e) { return __awaiter(void 0, void 0, void 0, function () {
-    var data, err_1;
+electron_1.ipcMain.on('generate_PDF_data', function (e) { return __awaiter(void 0, void 0, void 0, function () {
+    var response, data, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 2, , 3]);
+                response = {};
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
                 return [4 /*yield*/, win.webContents.printToPDF({
                         landscape: true,
                         marginsType: 1,
                         pageSize: 'A4',
                         printBackground: true
                     })];
-            case 1:
-                data = _a.sent();
-                e.sender.send('PDF data ready', data);
-                return [3 /*break*/, 3];
             case 2:
+                data = _a.sent();
+                response.success = true;
+                response.message = data;
+                return [3 /*break*/, 4];
+            case 3:
                 err_1 = _a.sent();
-                e.sender.send('Error', err_1);
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
+                response.success = false;
+                response.message = err_1;
+                return [3 /*break*/, 4];
+            case 4:
+                e.sender.send('generate_PDF_data_response', response);
+                return [2 /*return*/];
         }
     });
 }); });
-electron_1.ipcMain.on('Get save path', function (e) { return __awaiter(void 0, void 0, void 0, function () {
-    var filePath;
+electron_1.ipcMain.on('get_save_path', function (e) { return __awaiter(void 0, void 0, void 0, function () {
+    var filePath, response;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, electron_1.dialog.showSaveDialog({
@@ -134,27 +149,35 @@ electron_1.ipcMain.on('Get save path', function (e) { return __awaiter(void 0, v
                 })];
             case 1:
                 filePath = _a.sent();
+                response = {};
                 if (!filePath.canceled) {
-                    e.sender.send('Save path ready', filePath.filePath);
-                    return [2 /*return*/];
+                    response.success = true;
+                    response.message = filePath.filePath;
+                    // e.sender.send('Save path ready', filePath.filePath);
                 }
                 else {
-                    e.sender.send('Canceled');
-                    return [2 /*return*/];
+                    response.success = true;
+                    // e.sender.send('Canceled')
                 }
+                e.sender.send('get_save_path_response', response);
                 return [2 /*return*/];
         }
     });
 }); });
-electron_1.ipcMain.on('Print file', function (e) { return __awaiter(void 0, void 0, void 0, function () {
+electron_1.ipcMain.on('print_file', function (e) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         win.webContents.print({}, function (success, err) {
+            var response = {};
             if (success) {
-                e.sender.send('Success');
+                response.success = true;
+                //  e.sender.send('Success')
             }
             else {
-                e.sender.send('Fail', err);
+                response.success = false;
+                response.message = err;
+                // e.sender.send('Fail', err)
             }
+            e.sender.send('print_file_response', response);
         });
         return [2 /*return*/];
     });

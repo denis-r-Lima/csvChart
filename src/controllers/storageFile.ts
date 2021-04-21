@@ -16,28 +16,30 @@ export default class StorageFile {
   }
 
   private async getPath(): Promise<string> {
-    ipcRenderer.send("Get save path");
+    ipcRenderer.send("get_save_path");
 
     return new Promise((resolve, reject) => {
-      ipcRenderer.once("Save path ready", (_e: any, arg: any) => {
-        resolve(arg);
-      });
-      ipcRenderer.once("Canceled", () => {
-        reject("Canceled");
-      });
+      ipcRenderer.once("get_save_path_response", (_e:any, arg: any) => {
+        if(arg.success){
+          resolve(arg.message)
+          return
+        }
+        reject('Canceled')
+      })
     });
   }
 
   private async generateData(): Promise<Buffer> {
-    ipcRenderer.send("Generate PDF data");
+    ipcRenderer.send("generate_PDF_data");
 
     return new Promise((resolve, reject) => {
-      ipcRenderer.once("PDF data ready", (_e: any, arg: Buffer) => {
-        resolve(arg);
-      });
-      ipcRenderer.once("Error", (_e: any, arg: any) => {
-        reject(arg);
-      });
+      ipcRenderer.once("generate_PDF_data_response", (_e: any, arg: any) => {
+        if(arg.success){
+          resolve(arg.message)
+          return
+        }
+        reject(arg.message)
+      })
     });
   }
 }

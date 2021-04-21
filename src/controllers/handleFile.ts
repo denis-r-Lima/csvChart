@@ -45,15 +45,16 @@ export class OpenDragFile extends HandleFile {
 export class OpenFileWindows extends HandleFile{
 
   private openFileWindowns(): Promise<string> {
-    ipcRenderer.send('open file dialog');
+    ipcRenderer.send('open_file_dialog');
   
     return new Promise((resolve, reject) => {
-      ipcRenderer.once('file path', (_e: any, arg: string) => {
-        resolve(arg);
-      });
-      ipcRenderer.once('canceled', (_e: any) => {
-        reject(false);
-      });
+      ipcRenderer.once('open_file_dialog_response', (_e: any, arg: any) => {
+        if(arg.success){
+          resolve(arg.message)
+          return
+        }
+        reject(arg.success)
+      })
     });
   }
 

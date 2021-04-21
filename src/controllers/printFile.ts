@@ -11,13 +11,14 @@ export default class PrintFile{
     }
 
     private requestPrint(){
-        ipcRenderer.send('Print file')
+        ipcRenderer.send('print_file')
         return new Promise((resolve, reject) => {
-            ipcRenderer.once('Success', ()=>{
-                resolve('Success')
-            })
-            ipcRenderer.once('Fail', (_e: any, arg: any) => {
-                reject(arg)
+            ipcRenderer.once('print_file_response', (_e: any, arg: any) => {
+                if(arg.succes){
+                    resolve('Success')
+                    return
+                }
+                reject(arg.error)
             })
         })
     }

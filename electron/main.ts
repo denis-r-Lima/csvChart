@@ -1,6 +1,12 @@
 import * as path from 'path';
 import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 
+interface EventResponse{
+  success?: boolean
+  message?: any
+
+}
+
 let win: BrowserWindow
 
 function createWindow() {
@@ -45,22 +51,33 @@ app.on("activate", () => {
   }
 })
 
-ipcMain.on('open file dialog', async (e) => {
+ipcMain.on('open_file_dialog', async (e) => {
   const filePath = await dialog.showOpenDialog({
     properties: ['openFile'],
     filters: [{ name: 'csv File', extensions: ['csv'] }],
   }); 
 
+  let response: EventResponse = {}
+
   if (!filePath.canceled) {
-    e.sender.send('file path', filePath.filePaths[0]);
-    return
+    response = {
+      success: true,
+      message: filePath.filePaths[0]
+    }
+    // e.sender.send('file path', filePath.filePaths[0]);
+    // return
   }else{
-    e.sender.send('canceled')
-    return
+    response = {
+      success: false
+    }
+    // e.sender.send('canceled')
+    // return
   }
+  e.sender.send('open_file_dialog_response', response)
 });
 
-ipcMain.on('Generate PDF data', async e => {
+ipcMain.on('generate_PDF_data', async e => {
+  let response: EventResponse = {}
   try{
     let data = await win.webContents.printToPDF({
       landscape: true,
@@ -68,33 +85,42 @@ ipcMain.on('Generate PDF data', async e => {
       pageSize: 'A4',
       printBackground: true
     })
-    e.sender.send('PDF data ready', data)
+    response.success = true
+    response.message = data
   }catch(err){
-    e.sender.send('Error', err)
+    response.success = false
+    response.message = err
   }
+  e.sender.send('generate_PDF_data_response', response)
 })
 
-ipcMain.on('Get save path', async e => {
+ipcMain.on('get_save_path', async e => {
   const filePath = await dialog.showSaveDialog({
     properties: ['createDirectory'],
     filters: [{ name: 'pdf File', extensions: ['pdf'] }],
   }); 
 
+  let response: EventResponse = {}
+
   if (!filePath.canceled) {
-    e.sender.send('Save path ready', filePath.filePath);
-    return
+    response.success = true
+    response.message = filePath.filePath    
   }else{
-    e.sender.send('Canceled')
-    return
+    response.success = true
   }
+
+  e.sender.send('get_save_path_response', response)
 })
 
-ipcMain.on('Print file', async e => {
+ipcMain.on('print_file', async e => {
      win.webContents.print({}, (success, err) => {
+       let response: EventResponse = {}
        if(success){
-         e.sender.send('Success')
-       }else{
-         e.sender.send('Fail', err)
-       }
+         response.success = true
+        }else{
+          response.success = false
+          response.message = err
+        }
+        e.sender.send('print_file_response', response)
      } )
 })
