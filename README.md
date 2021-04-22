@@ -1,6 +1,6 @@
 # About the project
 
-This project take one csv file with specific text format and make a Pressure x Time chart, example of the csv file format can be find on csvSample folder.
+This project takes one csv file with specific text format and makes a Pressure x Time chart. Example of the csv file format can be found on csvSample folder.
 
 ## Instalation
 
