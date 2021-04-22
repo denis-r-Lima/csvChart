@@ -1,4 +1,5 @@
 import fs from "fs";
+import { EventResponse } from "../../electron/main";
 const { ipcRenderer } = window.require("electron");
 
 export default class StorageFile {
@@ -19,7 +20,7 @@ export default class StorageFile {
     ipcRenderer.send("get_save_path");
 
     return new Promise((resolve, reject) => {
-      ipcRenderer.once("get_save_path_response", (_e:any, arg: any) => {
+      ipcRenderer.once("get_save_path_response", (_e:any, arg: EventResponse) => {
         if(arg.success){
           resolve(arg.message)
           return
@@ -33,7 +34,7 @@ export default class StorageFile {
     ipcRenderer.send("generate_PDF_data");
 
     return new Promise((resolve, reject) => {
-      ipcRenderer.once("generate_PDF_data_response", (_e: any, arg: any) => {
+      ipcRenderer.once("generate_PDF_data_response", (_e: any, arg: EventResponse) => {
         if(arg.success){
           resolve(arg.message)
           return

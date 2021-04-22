@@ -1,7 +1,7 @@
 import * as path from 'path';
 import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 
-interface EventResponse{
+export interface EventResponse{
   success?: boolean
   message?: any
 

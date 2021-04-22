@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { EventResponse } from '../../electron/main';
 const { ipcRenderer } = window.require('electron');
 
 export function testFileExtension(e: File): boolean {
@@ -48,7 +49,7 @@ export class OpenFileWindows extends HandleFile{
     ipcRenderer.send('open_file_dialog');
   
     return new Promise((resolve, reject) => {
-      ipcRenderer.once('open_file_dialog_response', (_e: any, arg: any) => {
+      ipcRenderer.once('open_file_dialog_response', (_e: any, arg: EventResponse) => {
         if(arg.success){
           resolve(arg.message)
           return

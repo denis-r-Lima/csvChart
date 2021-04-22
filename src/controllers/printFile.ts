@@ -1,3 +1,5 @@
+import { EventResponse } from "../../electron/main";
+
 const { ipcRenderer } = window.require('electron');
 
 export default class PrintFile{
@@ -13,12 +15,12 @@ export default class PrintFile{
     private requestPrint(){
         ipcRenderer.send('print_file')
         return new Promise((resolve, reject) => {
-            ipcRenderer.once('print_file_response', (_e: any, arg: any) => {
-                if(arg.succes){
+            ipcRenderer.once('print_file_response', (_e: any, arg: EventResponse) => {
+                if(arg.success){
                     resolve('Success')
                     return
                 }
-                reject(arg.error)
+                reject(arg.message)
             })
         })
     }
