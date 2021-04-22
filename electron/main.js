@@ -156,7 +156,7 @@ electron_1.ipcMain.on('get_save_path', function (e) {
                         response.message = filePath.filePath;
                     }
                     else {
-                        response.success = true;
+                        response.success = false;
                     }
                     e.sender.send('get_save_path_response', response);
                     return [2 /*return*/];

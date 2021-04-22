@@ -4,7 +4,6 @@ import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 export interface EventResponse{
   success?: boolean
   message?: any
-
 }
 
 let win: BrowserWindow
@@ -22,7 +21,6 @@ function createWindow() {
   })
   if (process.env.IS_DEV) {
     win.loadURL("http://localhost:3000/")
-    //win.webContents.openDevTools()
   } else {
     win.loadFile(path.join(__dirname, "../build/index.html"))
     win.removeMenu()
@@ -102,7 +100,7 @@ ipcMain.on('get_save_path', async e => {
     response.success = true
     response.message = filePath.filePath    
   }else{
-    response.success = true
+    response.success = false
   }
 
   e.sender.send('get_save_path_response', response)
