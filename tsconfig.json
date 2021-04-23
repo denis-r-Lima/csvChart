@@ -21,9 +21,11 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-   "include": [
+  "include": [
     "src",
     "electron/*"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

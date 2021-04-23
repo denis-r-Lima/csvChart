@@ -1,4 +1,3 @@
-import fs from 'fs';
 import { EventResponse } from '../../electron/main';
 const { ipcRenderer } = window.require('electron');
 
@@ -22,23 +21,28 @@ class HandleFile{
     return dataArray;
   }
 
-  protected openFile(): string[][]{
-
-    const data = fs.readFileSync(this.path, 'utf8');
-
-    const dataArray: string[][] = this.splitComma(data);
-
-    return dataArray;
+  protected openFile(): Promise<string[][]>{
+    ipcRenderer.send('open_file', this.path)
+    
+    return new Promise((resolve) => {
+      ipcRenderer.once('open_file_response', (_e: any, arg: EventResponse) => {
+        const dataArray: string[][] = this.splitComma(arg.message);
+        resolve(dataArray);
+      })
+    })
   }
 }
+    
+
+
 
 export class OpenDragFile extends HandleFile {
   constructor(path: string = ''){
     super(path)
   }
   
-  public getData(): string[][]{
-    return this.openFile()
+  public async getData(): Promise<string[][]>{
+    return await this.openFile() 
   }
  
 }
@@ -46,7 +50,7 @@ export class OpenDragFile extends HandleFile {
 export class OpenFileWindows extends HandleFile{
 
   private openFileWindowns(): Promise<string> {
-    ipcRenderer.send('open_file_dialog');
+    ipcRenderer.send('open_file_dialog')
   
     return new Promise((resolve, reject) => {
       ipcRenderer.once('open_file_dialog_response', (_e: any, arg: EventResponse) => {
@@ -62,7 +66,7 @@ export class OpenFileWindows extends HandleFile{
   public async getData(){
     try{
       this.path = await this.openFileWindowns()
-      return this.openFile()
+      return await this.openFile()
     }catch{
       return false
     }

@@ -1,5 +1,6 @@
-import * as path from 'path';
-import { app, BrowserWindow, dialog, ipcMain } from 'electron';
+import * as path from 'path'
+import { readFileSync } from 'fs'
+import { app, BrowserWindow, dialog, ipcMain } from 'electron'
 
 export interface EventResponse{
   success?: boolean
@@ -62,6 +63,7 @@ ipcMain.on('open_file_dialog', async (e) => {
       success: true,
       message: filePath.filePaths[0]
     }
+    
   }else{
     response = {
       success: false
@@ -117,4 +119,15 @@ ipcMain.on('print_file', async e => {
         }
         e.sender.send('print_file_response', response)
      } )
+})
+
+ipcMain.on('open_file', (e, arg: string) => {
+  console.log(arg)
+  const data = readFileSync(arg, 'utf-8') 
+    let response: EventResponse = {}
+      response = {
+        success: true,
+        message: data,
+      }
+    e.sender.send('open_file_response', response)
 })

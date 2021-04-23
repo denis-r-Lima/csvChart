@@ -53,7 +53,7 @@ const Box: React.FC = () => {
     if (file) {
       if (testFileExtension(file)) {
         const dragFile = new OpenDragFile(file.path);
-        const data = dragFile.getData();
+        const data = await dragFile.getData();
         const finalData = new DataManipulation(data)
           .removeColumn(columnsToRevome)
           .removeRow(rowsToRemove)
