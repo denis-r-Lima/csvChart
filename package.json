@@ -21,10 +21,10 @@
     "react:start": "react-scripts start",
     "react:build": "react-scripts build",
     "eject": "react-scripts eject",
-    "electron:transpile": "yarn tsc ./electron/main.ts",
-    "electron:start": "set IS_DEV=true && electron .",
+    "electron:transpile": "yarn tsc --skipLibCheck ./electron/main.ts",
+    "electron:start": "export IS_DEV=true && set IS_DEV=true && electron .",
     "dist": "electron-builder",
-    "preelectron:pack": "yarn build",
+    "preelectron:pack": "yarn build && yarn electron:transpile",
     "electron:pack": "yarn dist --win portable"
   },
   "build": {
